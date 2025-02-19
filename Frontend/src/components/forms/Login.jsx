@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -38,6 +39,9 @@ export default function LoginForm() {
             Login
           </motion.button>
         </form>
+        <p className="mt-4 text-center text-gray-400">
+          Don't have an account? <Link to="/register-user" className="text-green-400 hover:underline">Register here</Link>
+        </p>
       </motion.div>
     </div>
   );

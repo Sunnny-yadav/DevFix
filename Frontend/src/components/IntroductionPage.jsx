@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function IntroductionPage() {
+  
+  const navigate = useNavigate()
+
   return (
     <div className="relative h-screen w-full overflow-hidden bg-gray-900">
       {/* Video Background */}
@@ -32,6 +36,7 @@ export default function IntroductionPage() {
         </p>
         <motion.button
           whileHover={{ scale: 1.05 }}
+          onClick={()=> navigate("/register-user") }
           className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-full shadow-xl hover:bg-green-700 transition-all font-[Poppins]"
         >
           Get Started

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
@@ -47,7 +48,8 @@ export default function RegistrationForm() {
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>
           </select>
-
+          
+          <label className="block text-gray-400">Profile Picture:</label>
           <input type="file" accept="image/*" className="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-white" onChange={handleFileChange} />
           
           <motion.button 
@@ -58,6 +60,9 @@ export default function RegistrationForm() {
             Register
           </motion.button>
         </form>
+        <p className="mt-4 text-center text-gray-400">
+          Already have an account? <Link to="/login" className="text-green-400 hover:underline">Login here</Link>
+        </p>
       </motion.div>
     </div>
   );

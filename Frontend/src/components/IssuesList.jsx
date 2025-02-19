@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 const issues = [
   {
     id: 1,
@@ -21,6 +22,7 @@ const issues = [
 ];
 
 export default function IssuesList() {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-900 text-white p-6 font-sans">
       <h1 className="text-5xl font-extrabold text-green-400 mb-6 font-[Poppins]">Reported Issues</h1>
@@ -48,6 +50,7 @@ export default function IssuesList() {
             </div>
             <motion.button 
               whileHover={{ scale: 1.1 }}
+              onClick={()=> navigate('/dashboard/issue-details')}
               className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition-all font-[Poppins]"
             >
               View Details
