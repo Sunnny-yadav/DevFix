@@ -20,7 +20,6 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login Data Submitted:', formData);
 
     try {
       const response = await fetch("http://localhost:8000/api/v1/users/login-user",{
@@ -32,9 +31,9 @@ export default function LoginForm() {
       });
   
       const responseData = await response.json()
-      console.log(responseData)
+      
       if(response.ok){
-        toast.success(responseData.message)
+        // toast.success(responseData.message)
         SetTokenInLocalStorage(responseData.data)
         navigate("/dashboard/issues")
       }else{

@@ -20,7 +20,7 @@ const router = createBrowserRouter(
       <Route path='/dashboard' element={<Navbar />}>
         <Route path='/dashboard/issues' element={<IssuesList />} />
         <Route path='/dashboard/register-issue' element={<RegisterIssue />} />
-        <Route path='/dashboard/issue-details' element={<IssueDetail />} />
+        <Route path='/dashboard/:id/issue-details' element={<IssueDetail />} />
       </Route>
     </>
   )

@@ -87,7 +87,7 @@ function Navbar() {
       <div className="w-full relative h-[100vh] overflow-y-auto bg-gray-900 shadow-lg text-white">
         {/* User Info Section */}
         <div className="flex items-center gap-4 p-4 bg-gray-800 shadow-md rounded-md mx-4 mt-4">
-          <img src={userData.profilePictureUrl} className="w-12 h-12 rounded-full shadow-md border-2 border-gray-600" alt="User Profile" />
+          <img src={userData.profilePictureUrl} className="w-12 h-12  object-contain rounded-full shadow-md border-2 border-gray-600" alt="User Profile" />
           <h2 className="text-lg font-semibold text-gray-300">Hi, {userData.userName}</h2>
         </div>
         

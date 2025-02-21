@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useIssueContext } from '../../context/issue.context';
 
 const issue = {
   id: 1,
@@ -16,6 +17,14 @@ export default function IssueDetail() {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
+  const {getIssueToBeViewed, viewIssue} = useIssueContext()
+
+  useEffect(()=>{
+    if(id.length !== 0){
+      getIssueToBeViewed(id)
+    }
+  },[id])
+
 
   const fetchComments = () => {
     // Simulate API call
@@ -39,19 +48,19 @@ export default function IssueDetail() {
         <button onClick={() => setPopupOpen(true)} className=" px-4 py-2 bg-green-600 text-white text-xs rounded-md font-semibold font-serif hover:bg-green-700">View Snippet</button>
           <div className="relative">
            
-            <img src={issue.errorImage} alt="Error Screenshot" className="w-32 h-32 rounded-md shadow-md" />
+            <img src={viewIssue?.errorImage} alt="Error Screenshot" className="w-32 h-32 rounded-md shadow-md" />
           </div>
           <div className="relative">
             
-            <img src={issue.codeSnippet} alt="Code Snippet" className="w-32 h-32 rounded-md shadow-md" />
+            <img src={viewIssue?.codeSnippet} alt="Code Snippet" className="w-32 h-32 rounded-md shadow-md" />
           </div>
         </div>
         
         {/* Right Side - Details */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-3xl font-semibold text-green-300 mb-2 font-[Poppins]">{issue.title}</h2>
-          <p className="text-md text-gray-300 mb-4 font-[Inter] leading-relaxed">{issue.description}</p>
-          <p className="text-sm text-gray-400">Reported on: {issue.date}</p>
+          <h2 className="text-3xl font-semibold text-green-300 mb-2 font-[Poppins]">{viewIssue?.title}</h2>
+          <p className="text-md text-gray-300 mb-4 font-[Inter] leading-relaxed">{viewIssue?.description}</p>
+          <p className="text-sm text-gray-400">Reported on: {new Date(viewIssue?.createdAt).toLocaleString()}</p>
         </div>
       </div>
       
@@ -92,10 +101,10 @@ export default function IssueDetail() {
             <button onClick={() => setPopupOpen(false)} className="absolute top-2 right-2 text-white text-lg">✖</button>
             <div className="flex gap-4 justify-center overflow-auto max-h-[80vh]">
               <div className='w-1/2 h-auto max-h-[80vh] overflow-auto'>
-                <img src={issue.errorImage} alt="Error Screenshot" className="w-full h-auto object-contain rounded-md shadow-md" />
+                <img src={viewIssue?.errorImage} alt="Error Screenshot" className="w-full h-auto object-contain rounded-md shadow-md" />
               </div>
               <div className='w-1/2 h-auto max-h-[80vh] overflow-auto'>
-                <img src={issue.codeSnippet} alt="Code Snippet" className="w-full h-auto object-contain rounded-md shadow-md" />
+                <img src={viewIssue?.codeSnippet} alt="Code Snippet" className="w-full h-auto object-contain rounded-md shadow-md" />
               </div>
             </div>
           </div>
