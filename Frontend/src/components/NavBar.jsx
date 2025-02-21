@@ -2,11 +2,13 @@ import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { FaList, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import logo from "../assets/code.jpg";
+import { useUserContext } from "../context/auth.context";
 
 function Navbar() {
   const navigate = useNavigate();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const { userData, Logout } = useUserContext();
 
   const handleSidebarToggle = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
@@ -72,7 +74,7 @@ function Navbar() {
         <div 
           className="flex items-center gap-3 px-3 py-2 text-lg font-serif rounded-md cursor-pointer transition hover:bg-gray-600 hover:shadow-md"
           onClick={() => {
-            
+            Logout()
             navigate("/");
           }}
         >
@@ -82,9 +84,15 @@ function Navbar() {
       </div>
 
       {/* Main Content Area */}
-      <div className="w-full relative h-[100vh] overflow-y-auto bg-white shadow-lg">
+      <div className="w-full relative h-[100vh] overflow-y-auto bg-gray-900 shadow-lg text-white">
+        {/* User Info Section */}
+        <div className="flex items-center gap-4 p-4 bg-gray-800 shadow-md rounded-md mx-4 mt-4">
+          <img src={userData.profilePictureUrl} className="w-12 h-12 rounded-full shadow-md border-2 border-gray-600" alt="User Profile" />
+          <h2 className="text-lg font-semibold text-gray-300">Hi, {userData.userName}</h2>
+        </div>
+        
         {/* Outlet for other components */}
-        <div className="h-full">
+        <div className="h-full p-4">
           <Outlet />
         </div>
       </div>

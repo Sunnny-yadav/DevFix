@@ -1,21 +1,49 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../context/auth.context';
+import toast from 'react-hot-toast';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const navigate = useNavigate()
+
+  const {SetTokenInLocalStorage} = useUserContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Login Data Submitted:', formData);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/users/login-user",{
+        method:"POST",
+        headers:{
+          "Content-Type":"Application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+  
+      const responseData = await response.json()
+      console.log(responseData)
+      if(response.ok){
+        toast.success(responseData.message)
+        SetTokenInLocalStorage(responseData.data)
+        navigate("/dashboard/issues")
+      }else{
+        toast.error(responseData.message)
+        throw new Error("Error in login opearation")
+      }
+    } catch (error) {
+      console.log("Error in login opearation" ,error)
+    }
   };
 
   return (
