@@ -45,7 +45,7 @@ const getCommentsByIssue = AsyncHandeller(async (req, res, next) => {
   const issueId = req.params.issueId;
 
   const comments = await Comment.find({ issueId })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: 1 })
     .populate("userId", "userName email");
 
   if (!comments || comments.length === 0) {
