@@ -1,33 +1,49 @@
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIssueContext } from '../context/issue.context';
 
-
-
 export default function IssuesList() {
-  const navigate = useNavigate()
-  const {getIssues, displayedIssue, issues} = useIssueContext();
+  const navigate = useNavigate();
+  const { getIssues, displayedIssue, issues, showAllIssues, showPersonalIssues } = useIssueContext();
+  // const [filteredIssues, setFilteredIssues] = useState([]);
 
-  useEffect(()=>{
-    if(issues.length === 0 ){
-      getIssues()
-    }
-  },[]);
-
+  useEffect(() => {
+    if (issues.length === 0) {
+      getIssues(); 
+    } 
+  }, [issues]);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-900 text-white p-6 font-sans">
       <h1 className="text-5xl font-extrabold text-green-400 mb-6 font-[Poppins]">Reported Issues</h1>
-      <p className="text-lg text-gray-300 mb-8 max-w-3xl text-center font-[Inter] leading-relaxed">
+      <p className="text-lg text-gray-300 mb-6 max-w-3xl text-center font-[Inter] leading-relaxed">
         Browse the list of reported issues by developers. Each card contains the error details along with code snippets to help analyze and debug the problem.
       </p>
-      
+
+      {/* Buttons to filter issues */}
+      <div className="flex gap-4 mb-6">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          onClick={showAllIssues}
+          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all font-[Poppins]"
+        >
+          View All Issues
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          onClick={showPersonalIssues}
+          className="px-6 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition-all font-[Poppins]"
+        >
+          View My Issues
+        </motion.button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
         {displayedIssue?.map(issue => (
-          <motion.div 
-            key={issue._id} 
-            className="bg-gray-800 p-5 rounded-lg shadow-lg text-center"
+          <motion.div
+            key={issue._id}
+            className="bg-gray-800 p-5 rounded-lg shadow-lg text-center flex flex-col justify-end"
             whileHover={{ scale: 1.05 }}
           >
             <h2 className="text-2xl font-semibold text-green-300 mb-3 font-[Poppins]">{issue.title}</h2>
@@ -41,9 +57,9 @@ export default function IssuesList() {
                 <img src={issue.codeSnippet} alt="Code Snippet" className="w-32 h-32 rounded-md shadow-md" />
               </div>
             </div>
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.1 }}
-              onClick={()=> navigate(`/dashboard/${issue._id}/issue-details`)}
+              onClick={() => navigate(`/dashboard/${issue._id}/issue-details`)}
               className="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition-all font-[Poppins]"
             >
               View Details

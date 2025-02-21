@@ -7,7 +7,7 @@ const issueContext = createContext()
 
 export const IssueContextProvider = ({ children }) => {
 
-    const { Token } = useUserContext();
+    const { Token, userData } = useUserContext();
     const [issues, setissues] = useState([])
     const [displayedIssue, setdisplayedIssue] = useState([])
     const [viewIssue, setviewIssue] = useState({})
@@ -45,6 +45,15 @@ export const IssueContextProvider = ({ children }) => {
         setviewIssue(data[0]);
     };
 
+    const showAllIssues = ()=>{
+        setdisplayedIssue(issues)
+    }
+
+    const showPersonalIssues = ()=>{
+        const data = issues.filter((issue)=> issue.userId === userData._id);
+        setdisplayedIssue(data)
+    }
+
     return (
         <issueContext.Provider value={{
             getIssues,
@@ -54,7 +63,9 @@ export const IssueContextProvider = ({ children }) => {
             getIssueToBeViewed,
             viewIssue, fetchComments,
             setfetchedcomments,
-            Token
+            Token,
+            showAllIssues,
+            showPersonalIssues
         }}>
             {children}
         </issueContext.Provider>
