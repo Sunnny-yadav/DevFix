@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { FaList, FaPlus, FaSignOutAlt } from "react-icons/fa";
-import logo from "../../public/code.jpg";
+import logo from "../assets/code.jpg";
 
 function Navbar() {
   const navigate = useNavigate();

@@ -1,10 +1,14 @@
 import express from "express"
+import cors from "cors"
 
 const app = express();
-
+const corsOption = {
+origin:"http://localhost:5173",
+}
 
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cors(corsOption))
 
 
 import userRouter from '../src/routers/user.router.js'

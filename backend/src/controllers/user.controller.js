@@ -4,64 +4,77 @@ import { upload_On_Cloudinary } from "../utils/Cloudinary.js";
 import {ApiResponse} from '../utils/ApiResponse.js'
 
 
-const registerUser = AsyncHandeller(async (req, res, next)=>{
+const registerUser = AsyncHandeller(async (req, res, next) => {
+  
+  const { fullName, userName, email, password, confirmPassword, experience } = req.body;
+  
+  // Check for missing fields
+  if ([fullName, userName, email, password, experience, confirmPassword].some((inputField) => inputField === "")) {
+      return next({
+          status: 400,
+          message: "All Fields are required"
+      });
+  }
 
-    const {fullName, userName, email, password, experience} = req.body;
+  // Check for password match
+  if (password !== confirmPassword) {
+      return next({
+          status: 400,
+          message: "Password and Confirm Password Mismatched"
+      });
+  }
 
-    if([fullName, userName, email, password, experience].some((inputField)=> inputField === "")){
-        return next({
-            status: 400,
-            message: "All Fields are required"
-        })
-    }
+  // Check if email or username already exists
+  const check = await User.findOne({
+      $or: [{ email}, { userName}]
+  });
 
-    const check = await User.findOne({email})
+  if (check) {
+      const message = check.email === email ? "Email already exists" : "Username already exists";
+      return next({
+          status: 400,
+          message
+      });
+  }
 
-    if(check){
-        return next({
-            status:400,
-            message:"email already exist"
-        })
-    }
+  // Profile picture handling
+  const profilePicturePath = req.file?.path;
+  if (!profilePicturePath) {
+      return next({
+          status: 400,
+          message: "Internal Server Error, please try again"
+      });
+  }
 
-    const profilePicturePath = req.file?.path;
+  const profilePictureUrl = await upload_On_Cloudinary(profilePicturePath);
+  if (!profilePictureUrl) {
+      return next({
+          status: 400,
+          message: "Failed to upload image, try again"
+      });
+  }
 
+  // Create the new user
+  const user = await User.create({
+      fullName,
+      userName, 
+      experience,
+      email,
+      password,
+      profilePictureUrl
+  });
 
-    if(!profilePicturePath){
-        return next({
-            status:400,
-            message:"Internal Server Error , plz try again"
-        })
-    }
+  if (!user) {
+      return next({
+          status: 400,
+          message: "Registration Process Failed"
+      });
+  }
 
-    const profilePictureUrl = await upload_On_Cloudinary(profilePicturePath)
-
-    if(!profilePicturePath){
-        return next({
-            status:400,
-            message:"Failed to uplaod image, try again "
-        })
-    }
-
-    const user = await User.create({
-        fullName,
-        userName,
-        experience,
-        email,
-        password,
-        profilePictureUrl
-    });
-
-    if(!user){
-        return next({
-            status:400,
-            message:"Registration Process Failed"
-        })
-    }
-
-    return res.status(200).json(new ApiResponse(200, user, "user registration successfull"))
+  return res.status(200).json(new ApiResponse(200, user, "User registration successful"));
 
 });
+
 
 const login_User = AsyncHandeller(async (req, res) => {
 
