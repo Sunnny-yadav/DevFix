@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import toast from 'react-hot-toast';
 import { useUserContext } from '../context/auth.context';
-import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism'; 
+import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function ChatInterface() {
     const [messages, setMessages] = useState([]);
@@ -44,34 +44,31 @@ export default function ChatInterface() {
     };
 
     const renderMessageContent = (text) => {
-        // Check if text contains code blocks using triple backticks ```
-        if (text.includes('```')) {
-            return (
-                <ReactMarkdown
-                    children={text}
-                    components={{
-                        code({ node, inline, className, children, ...props }) {
-                            const match = /language-(\w+)/.exec(className || '')
-                            return !inline && match ? (
-                                <SyntaxHighlighter
-                                    children={String(children).replace(/\n$/, '')}
-                                    style={materialDark}
-                                    language={match[1]}
-                                    PreTag="div"
-                                    wrapLongLines={true} // Important for long code blocks
-                                />
-                            ) : (
-                                <code className={className} {...props}>
-                                    {children}
-                                </code>
-                            );
-                        }
-                    }}
-                />
-            );
-        } else {
-            return <ReactMarkdown>{text}</ReactMarkdown>;
-        }
+        return (
+            <ReactMarkdown
+                components={{
+                    code({ inline, className, children}) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        return !inline && match ? (
+                            <SyntaxHighlighter
+                                style={materialDark}
+                                language={match[1]}
+                                PreTag="div"
+                                wrapLongLines={true}
+                            >
+                                {String(children).replace(/\n$/, '')}
+                            </SyntaxHighlighter>
+                        ) : (
+                            <code className={className}>
+                                {children}
+                            </code>
+                        );
+                    }
+                }}
+            >
+                {text}
+            </ReactMarkdown>
+        );
     };
 
     return (
@@ -100,13 +97,13 @@ export default function ChatInterface() {
 
             {/* Input Section */}
             <div className="w-full fixed bottom-3 max-w-3xl flex items-center gap-2 mt-4">
-                <input
-                    type="text"
+                <textarea
                     placeholder="Ask Gemini about your issue..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="flex-1 p-3 rounded-md bg-gray-700 text-white outline-none"
-                />
+                    className="flex-1 p-3 rounded-md bg-gray-700 text-white outline-none resize-none h-24"
+                ></textarea>
+
                 <button
                     onClick={handleSendMessage}
                     disabled={query === ""}
