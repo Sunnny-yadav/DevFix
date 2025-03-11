@@ -7,6 +7,7 @@ import RegistrationForm from './components/forms/Registration'
 import IntroductionPage from './components/IntroductionPage'
 import IssuesList from './components/IssuesList'
 import Navbar from './components/NavBar'
+import ChatInterface from './components/AIBot'
 
 
 const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
         <Route path='/dashboard/issues' element={<IssuesList />} />
         <Route path='/dashboard/register-issue' element={<RegisterIssue />} />
         <Route path='/dashboard/:id/issue-details' element={<IssueDetail />} />
+        <Route  path="/dashboard/AI-interface" element={<ChatInterface/>}  />
       </Route>
     </>
   )

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { FaList, FaPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaList, FaPlus, FaSignOutAlt,FaRobot } from "react-icons/fa";
 import logo from "../assets/code.jpg";
 import { useUserContext } from "../context/auth.context";
 
@@ -48,7 +48,9 @@ function Navbar() {
             <ul className="flex flex-col gap-4">
               {[ 
                 { icon: <FaList />, label: "View Issues", link: "/dashboard/issues" },
-                { icon: <FaPlus />, label: "Register Issue", link: "/dashboard/register-issue" }
+                { icon: <FaPlus />, label: "Register Issue", link: "/dashboard/register-issue" },
+                { icon: <FaRobot />, label: "AI Support", link: "/dashboard/AI-interface" }
+
               ].map((item, index) => (
                 <li key={index}>
                   <NavLink
