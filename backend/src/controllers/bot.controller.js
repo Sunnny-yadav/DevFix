@@ -2,7 +2,7 @@ import { AsyncHandeller } from "../utils/AsyncHandeller.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI("AIzaSyBseu8DC6KnqFRAyMpXjnw59fB0Yulbbms");
+const genAI = new GoogleGenerativeAI(process.env.CHATBOT_API_KEY);
 
 const solveQuery = AsyncHandeller(async (req, res, next) => {
   const { text } = req.body;
